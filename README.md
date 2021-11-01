@@ -5,7 +5,7 @@ Python Dependecies: Pygame
 
 Art: Me
 
-Music: Me or any music by C418
+Music: Me and Lokaï#3962
 
 Coding: Me and Pygame tutorials
 
