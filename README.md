@@ -11,4 +11,8 @@ Coding: Me and Pygame tutorials
 
 This is my first game for an game jam!
 
+Good Luck to Everyone who sign up for this game jam!
+
+
+
 
