@@ -1,7 +1,9 @@
 import pygame as pg
+from pygame.draw import rect
 from pygame.locals import *
 
-SCREEN_WIDTH =   800
+# ToDo: get the actual screen size
+SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
 WIDTH = 64
@@ -14,10 +16,11 @@ class PlayerSprite(pg.sprite.Sprite):
         self.image = pg.Surface([WIDTH, HEIGHT])
         self.image.fill(pg.Color(50, 168, 82))
         self.rect = self.image.get_rect(topleft = (SCREEN_WIDTH/4,SCREEN_HEIGHT-HEIGHT-100))
-        self.platform_rect = platform_rect.inflate(-platform_rect.width/5, -HEIGHT) #makes the rect smaller so it fints the image
+        self.platform_rect = platform_rect.inflate(-platform_rect.width/5, -HEIGHT) #makes the rect smaller so it fits the image
         self.rect.centerx = self.platform_rect.centerx
 
     def update(self):
+        """moves the player"""
         pressed_keys = pg.key.get_pressed()
         if self.rect.left > self.platform_rect.left:   #1/4 of the screen is for the left limit
               if pressed_keys[K_LEFT]:
@@ -31,11 +34,23 @@ class PlayerSprite(pg.sprite.Sprite):
 
 class Obsticale(pg.sprite.Sprite):
     """obsticale needed to be dodged"""
-    def __init__(self):
+    def __init__(self, platform_rect):
         pg.sprite.Sprite.__init__(self)
+        self.image = pg.Surface([32,32])
+        self.image.fill(pg.Color(22, 130, 111))
+        self.platform_rect = platform_rect
+        self.rect = self.image.get_rect(topleft = (self.platform_rect.centerx,self.platform_rect.height//4))
 
     def update(self):
-        pass
+        """increase the size of self rect, image, each call.
+        on max size Obsticale is killed"""
+        self.rect.move_ip(0, 3)
+        self.image = pg.transform.scale(self.image,(self.rect.width + 1,self.rect.height +1))   #too fast
+        self.rect = self.image.get_rect(topleft= self.rect.topleft)
+        if(not self.platform_rect.contains(self.rect)):
+            print("killed")
+            self.kill()
+        
 
 class Planform(pg.sprite.Sprite):
     """The platform player charecter is running on"""
@@ -47,7 +62,10 @@ class Planform(pg.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (SCREEN_WIDTH/4,0))
 
     def update(self):
+        """cycle animations of the platform"""
         pass
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+
+

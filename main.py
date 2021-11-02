@@ -1,5 +1,6 @@
 import pygame  as pg
 import pygame_gui as gui
+
 from gameSprites import *
 
 def main():
@@ -22,6 +23,8 @@ def main():
     player = PlayerSprite(platform.rect)
 
     generalSprites = (pg.sprite.Group(platform)) #sprites that are for show
+    obsticale = Obsticale(platform.rect)
+    obsticales = pg.sprite.Group(obsticale)
     is_running = True
 
     while is_running:
@@ -34,17 +37,18 @@ def main():
                     if event.ui_element == hello_button:
                         print('Hello World!')
             manager.process_events(event)
+        #updates
         manager.update(time_delta)
+        player.update()
+        obsticales.update()
 
-        
+        #draw
         window_surface.blit(background, (0, 0))
         manager.draw_ui(window_surface)
-
         generalSprites.draw(window_surface)
-        player.update()
+        obsticales.draw(window_surface)
         player.draw(window_surface)
         
-
         pg.display.update()
         
 
