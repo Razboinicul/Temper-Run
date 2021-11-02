@@ -1,5 +1,6 @@
 import pygame  as pg
 import pygame_gui as gui
+from gameSprites import *
 
 def main():
     """This is the Game's main function"""
@@ -15,6 +16,12 @@ def main():
     hello_button = gui.elements.UIButton(relative_rect=pg.Rect((350, 275), (100, 50)),
                                              text='Say Hello',
                                              manager=manager)
+
+    
+    platform  = Planform()
+    player = PlayerSprite(platform.rect)
+
+    generalSprites = (pg.sprite.Group(platform)) #sprites that are for show
     is_running = True
 
     while is_running:
@@ -29,8 +36,15 @@ def main():
             manager.process_events(event)
         manager.update(time_delta)
 
+        
         window_surface.blit(background, (0, 0))
         manager.draw_ui(window_surface)
+
+        generalSprites.draw(window_surface)
+        player.update()
+        player.draw(window_surface)
+        
+
         pg.display.update()
         
 
