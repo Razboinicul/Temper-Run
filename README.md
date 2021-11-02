@@ -7,7 +7,7 @@ Art: Me
 
 Music: Me and Lokaï#3962
 
-Coding: Me and Pygame tutorials
+Coding: Me, Pygame tutorials and lizela
 
 This is my first game for an game jam!
 
