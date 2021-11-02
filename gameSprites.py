@@ -14,7 +14,8 @@ class PlayerSprite(pg.sprite.Sprite):
         self.image = pg.Surface([WIDTH, HEIGHT])
         self.image.fill(pg.Color(50, 168, 82))
         self.rect = self.image.get_rect(topleft = (SCREEN_WIDTH/4,SCREEN_HEIGHT-HEIGHT-100))
-        self.platform_rect = platform_rect
+        self.platform_rect = platform_rect.inflate(-platform_rect.width/5, -HEIGHT) #makes the rect smaller so it fints the image
+        self.rect.centerx = self.platform_rect.centerx
 
     def update(self):
         pressed_keys = pg.key.get_pressed()
@@ -40,8 +41,9 @@ class Planform(pg.sprite.Sprite):
     """The platform player charecter is running on"""
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface([SCREEN_WIDTH/2,SCREEN_HEIGHT])
-        self.image.fill(pg.Color(100, 130, 200))
+        # self.image = pg.Surface([SCREEN_WIDTH/2,SCREEN_HEIGHT])
+        # self.image.fill(pg.Color(100, 130, 200))
+        self.image = pg.transform.scale(pg.image.load(r"resources\models\platform.png"),(SCREEN_WIDTH//2,SCREEN_HEIGHT)).convert_alpha()
         self.rect = self.image.get_rect(topleft = (SCREEN_WIDTH/4,0))
 
     def update(self):
