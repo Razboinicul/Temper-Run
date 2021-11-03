@@ -49,6 +49,7 @@ class PlayerSprite(GameSprite):
 
     def update(self):
         """moves the player and handles animaion"""
+
         pressed_keys = pg.key.get_pressed()
         if self.rect.left > self.platform_rect.left:   
               if pressed_keys[K_LEFT]:
@@ -82,6 +83,7 @@ class Obsticale(GameSprite):
     def update(self):
         """increase the size of self rect, image, each call.
         on max size Obsticale is killed"""
+
         self.rect.move_ip(0, self.speed)
         self.image = pg.transform.scale(self.image,(self.rect.width + 1,self.rect.height +1))   #too fast
         self.rect = self.image.get_rect(topleft= self.rect.topleft)

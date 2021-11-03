@@ -37,12 +37,14 @@ def main():
                     if event.ui_element == hello_button:
                         print('Hello World!')
             manager.process_events(event)
-        
+
         #updates
         manager.update(time_delta)
         player.update()
         obsticales.update()
+
         #ToDo: preform a collision cheak of obsticale with the player
+
 
         #draw
         window_surface.blit(background, (0, 0))
