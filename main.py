@@ -14,15 +14,14 @@ def main():
     clock = pg.time.Clock()
 
     # example button:
-    hello_button = gui.elements.UIButton(relative_rect=pg.Rect((350, 275), (100, 50)),
+    hello_button = gui.elements.UIButton(relative_rect=pg.Rect((0, 0), (100, 50)),
                                              text='Say Hello',
                                              manager=manager)
 
     
     platform  = Planform()
     player = PlayerSprite(platform.rect)
-
-    generalSprites = (pg.sprite.Group(platform)) #sprites that are for show
+    generalSprites = pg.sprite.Group(platform) #sprites that are for show
     obsticale = Obsticale(platform.rect)
     obsticales = pg.sprite.Group(obsticale)
     is_running = True
@@ -37,22 +36,21 @@ def main():
                     if event.ui_element == hello_button:
                         print('Hello World!')
             manager.process_events(event)
-
+        
         #updates
         manager.update(time_delta)
+        generalSprites.update()
         player.update()
         obsticales.update()
-
         #ToDo: preform a collision cheak of obsticale with the player
-
 
         #draw
         window_surface.blit(background, (0, 0))
-        manager.draw_ui(window_surface)
         generalSprites.draw(window_surface)
         obsticales.draw(window_surface)
         player.draw(window_surface)
-        
+        manager.draw_ui(window_surface)
+
         pg.display.update()
         
 
