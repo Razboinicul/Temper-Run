@@ -1,6 +1,8 @@
 # Temper Run
 Yep!!! Game Off 2021: https://itch.io/jam/game-off-2021
 
+Itch.io repo: 
+
 Python Dependecies: Pygame and Pygame GUI
 
 Art: Me
