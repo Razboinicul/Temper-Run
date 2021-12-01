@@ -1,4 +1,4 @@
-# Game-Off-2021-Game-XYZ
+# Temper Run
 Yep!!! Game Off 2021: https://itch.io/jam/game-off-2021
 
 Python Dependecies: Pygame and Pygame GUI
