@@ -1,60 +1,128 @@
-import pygame  as pg
+import pygame as pg
 import pygame_gui as gui
-
-from gameSprites import *
+from engine import *
 
 def main():
+    is_running = True
     """This is the Game's main function"""
     pg.init()
-    pg.display.set_caption('Game')
+    pg.display.set_caption('Temper Run')
     window_surface = pg.display.set_mode((800, 600))
-    background = pg.Surface((800, 600))
-    background.fill(pg.Color('#000000'))
+    
+    window_surface.fill(pg.Color('#87CEEB'))
     manager = gui.UIManager((800, 600))
     clock = pg.time.Clock()
 
-    # example button:
-    hello_button = gui.elements.UIButton(relative_rect=pg.Rect((0, 0), (100, 50)),
-                                             text='Say Hello',
+    def pause():
+        print("Pause Init")
+        global paused
+        paused = True
+
+        while paused:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    is_running = False
+
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_p:
+                        window_surface.fill(pg.Color('#87CEEB'))
+                        resume_button.show()
+
+
+    pg.font.init() # you have to call this at the start, 
+                   # if you want to use this module.
+    TitleFont = pg.font.SysFont('Arial', 80)
+    VerFont = pg.font.SysFont('Calibri', 40)
+    TitleText = TitleFont.render('Temper Run', False, (0, 0, 0))
+    VerText = VerFont.render('1.0.1 alpha', False, (0, 0, 0))
+
+    resume_button = gui.elements.UIButton(relative_rect=pg.Rect((290, 160), (250, 50)),
+                                             text='resume',
+                                             manager=manager)
+    
+    
+    play_button = gui.elements.UIButton(relative_rect=pg.Rect((290, 160), (250, 50)),
+                                             text='Play',
                                              manager=manager)
 
-    
-    platform  = Planform()
-    player = PlayerSprite(platform.rect)
-    generalSprites = pg.sprite.Group(platform) #sprites that are for show
-    obsticale = Obsticale(platform.rect)
-    obsticales = pg.sprite.Group(obsticale)
-    is_running = True
+    GG_button = gui.elements.UIButton(relative_rect=pg.Rect((288, 350), (125, 50)),
+                                             text='GG',
+                                             manager=manager)
 
+    About_button = gui.elements.UIButton(relative_rect=pg.Rect((290, 210), (250, 50)),
+                                             text='About',
+                                             manager=manager)
+    
+    Exit_button = gui.elements.UIButton(relative_rect=pg.Rect((418, 350), (125, 50)),
+                                             text='Exit',
+                                             manager=manager)
+
+    # only 1 game object is needed!
+    game = Game()
+
+    
+    #stopping this game just set this to false
+    game_active = False
     while is_running:
-        time_delta = clock.tick(60)
+        time_delta = clock.tick(30)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 is_running = False
             if event.type == pg.USEREVENT:
                 if event.user_type == gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == hello_button:
-                        print('Hello World!')
+                    if event.ui_element == resume_button:
+                        paused = False
+                        game_active = True
+                        print('OK')
+                if event.user_type == gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == play_button:
+                        game_active = True
+                        print('OK')
+
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_p:
+                        pause()
+                        window_surface.fill(pg.Color('#87CEEB'))
+                        resume_button.show()
+                if event.user_type == gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == About_button:
+                        print('Coming Soon')
+                if event.user_type == gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == GG_button:
+                        print('GG!')
+                if event.user_type == gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == Exit_button:
+                        is_running = False   
+                
             manager.process_events(event)
-        
-        #updates
         manager.update(time_delta)
-        generalSprites.update()
-        player.update()
-        obsticales.update()
-        #ToDo: preform a collision cheak of obsticale with the player
 
-        #draw
-        window_surface.blit(background, (0, 0))
-        generalSprites.draw(window_surface)
-        obsticales.draw(window_surface)
-        player.draw(window_surface)
+
+        if game_active:
+            #if game ongoing update it
+            resume_button.hide()
+            resume_button.disable()
+            play_button.disable()
+            About_button.disable()
+            GG_button.disable()
+            Exit_button.disable()
+            play_button.hide()
+            About_button.hide()
+            GG_button.hide()
+            Exit_button.hide()
+            game.update(window_surface)
+            while paused:
+                clock.tick(15)
+
+        else:
+            # dont blit menu stuff when game is on
+            window_surface.blit(TitleText,(235, 25))
+            window_surface.blit(VerText,(5, 561))
+        
         manager.draw_ui(window_surface)
-
         pg.display.update()
         
 
-
-
 if __name__ == '__main__':
     main()
+
